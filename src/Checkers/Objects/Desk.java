@@ -114,7 +114,7 @@ public class Desk extends Map
         game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_PRESS,
                 ()-> lastMousePos = game.mouse.getAbsoluteMousePos() ));
         game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_HOLD,
-                ()-> {mouseLeftHold(game); lastMousePos = game.mouse.getAbsoluteMousePos();}));
+                ()-> {mouseLeftHold(game.mouse.getAbsoluteMousePos()); lastMousePos = game.mouse.getAbsoluteMousePos();}));
         game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_RELEASE,
                 ()-> mouseLeftRelease()));
 
@@ -151,14 +151,14 @@ public class Desk extends Map
     private Vector2f lastMousePos;
     private Vector2i from, to;
 
-    public void mouseLeftHold(Game game) //вежливо вырван из чьего-то редактора
+    public void mouseLeftHold(Vector2f mouse_pos) //вежливо вырван из чьего-то редактора
     {
         if (objectIsMoving) { //что-то выделяли??
             if (currentChecker == null) { //на самом деле ничего не выделили? исправляем.
                 objectIsMoving = false;
             } else {
                 Transform transform = currentChecker.transform;
-                Vector2f mousePos = game.mouse.getAbsoluteMousePos();
+                Vector2f mousePos = mouse_pos;
                 transform.translate(mousePos.add(-lastMousePos.x, -lastMousePos.y));
                 return; //все хорошо. пока до следующей итерации
             }
@@ -173,7 +173,7 @@ public class Desk extends Map
                 transform = a.transform;
 
             if (transform != null)
-                if (transform.getRectArea().inArea(game.mouse.getAbsoluteMousePos())) {
+                if (transform.getRectArea().inArea(mouse_pos)) {
                     currentChecker = a;
                     break;
                 }

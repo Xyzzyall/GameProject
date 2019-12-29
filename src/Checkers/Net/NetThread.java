@@ -6,7 +6,7 @@ import Checkers.Net.Wraps.Wrap;
 
 import java.util.ArrayDeque;
 
-public abstract class NetThread {
+public abstract class NetThread extends Thread {
 
     private ArrayDeque<byte[]> given_packets = new ArrayDeque<>();
     private ArrayDeque<byte[]> packets_to_sent = new ArrayDeque<>();
@@ -22,7 +22,7 @@ public abstract class NetThread {
         given_packets.addFirst(packet);
     }
 
-    public SmoothTransform tryUnwrapToTransform(SmoothTransform arg){
+    protected SmoothTransform tryUnwrapToTransform(SmoothTransform arg){
         try {
             TransformWrap res = new TransformWrap(last());
             pop();
