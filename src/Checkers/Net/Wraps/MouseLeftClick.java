@@ -1,15 +1,13 @@
 package Checkers.Net.Wraps;
 
-import Checkers.Objects.MouseActionData;
 
-public class MouseLeftClick extends Wrap<MouseActionData> {
-    @Override
-    public byte getWrapSign() {
-        return 0;
+public class MouseLeftClick extends MouseActionWrap {
+    public MouseLeftClick(byte[] bytes) throws WrongIntepretation {
+        super(bytes);
     }
 
     @Override
-    public MouseActionData unwrap_to(MouseActionData arg) {
-        return null;
+    public byte getWrapSign() {
+        return Wrap.MOUSE_LEFT_CLICK;
     }
 }

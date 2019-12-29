@@ -1,15 +1,12 @@
 package Checkers.Net.Wraps;
 
-import Checkers.Objects.MouseActionData;
-
-public class MouseMiddleClick extends Wrap<MouseActionData> {
-    @Override
-    public byte getWrapSign() {
-        return 0;
+public class MouseMiddleClick extends MouseActionWrap {
+    public MouseMiddleClick(byte[] bytes) throws WrongIntepretation {
+        super(bytes);
     }
 
     @Override
-    public MouseActionData unwrap_to(MouseActionData arg) {
-        return null;
+    public byte getWrapSign() {
+        return Wrap.MOUSE_MIDDLE_CLICK;
     }
 }

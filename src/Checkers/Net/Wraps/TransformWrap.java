@@ -9,9 +9,7 @@ public class TransformWrap extends Wrap<SmoothTransform> {
 
     public TransformWrap(byte[] bytes) throws WrongIntepretation{
         this.bytes = bytes;
-        if (bytes[0] != Wrap.TRANSFORM_SIGN){
-            throw new Wrap.WrongIntepretation();
-        }
+        check_interpretation();
     }
 
     @Override
@@ -25,4 +23,8 @@ public class TransformWrap extends Wrap<SmoothTransform> {
         return arg;
     }
 
+    @Override
+    public SmoothTransform unwrap() {
+        return null;
+    }
 }
