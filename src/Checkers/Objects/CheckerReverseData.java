@@ -1,4 +1,21 @@
 package Checkers.Objects;
 
+import Checkers.Net.Wraps.Wrap;
+
+import java.nio.ByteBuffer;
+
 public class CheckerReverseData {
+    char checker_type;
+    public CheckerReverseData(char checker_type){
+        this.checker_type = checker_type;
+    }
+
+    public CheckerReverseData(byte[] bytes){
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        checker_type = byteBuffer.getChar(1);
+    }
+
+    public byte[] to_bytes(){
+        return ByteBuffer.allocate(2).put(Wrap.CHECKER_REVERSE_SIGN).putChar(checker_type).array();
+    }
 }

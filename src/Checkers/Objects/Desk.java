@@ -35,7 +35,7 @@ public class Desk extends Map
 
     private int width, height;
 
-    public Desk(Game game) throws TextureBank.NonExistentTextureException
+    public Desk(Game game, boolean buttons) throws TextureBank.NonExistentTextureException
     {
         super();
         //получаем текстуры
@@ -85,27 +85,34 @@ public class Desk extends Map
         startCellsY = deskTransform.getPosition().y - .5f*deskScale + borderToDesk*deskScale + .5f*checkerSize;
         endCellsY = startCellsY + checkerSize*8;
 
-        //ставлю кнопку для расставления шашек
-        Transform btnTransform = new Transform().setPosition(-width*.53f + btnSizeYToDesk*deskScale + .5f*btnSizeXToDesk*deskScale,
-                                                             height*.5f - btnSizeYToDesk*deskScale + .5f*btnSizeYToDesk*deskScale)
-                                                .setLayer(.2f)
-                                                .setScale(-btnSizeYToDesk*deskScale, btnSizeXToDesk*deskScale)
-                                                .setAngle(-(float)Math.PI/2);
-        addDecal(new Decal(btnTransform, btnPlayTex));
-        Rectangle btnPlayArea = new Rectangle(
-                new Vector2f(-width*.53f + btnSizeYToDesk*deskScale, height*.5f - btnSizeYToDesk*deskScale),
-                new Vector2f(btnSizeXToDesk*deskScale, 0),
-                new Vector2f(0,btnSizeYToDesk*deskScale)
-        );
+        if (buttons) {
+            //ставлю кнопку для расставления шашек
+            Transform btnTransform = new Transform().setPosition(-width * .53f + btnSizeYToDesk * deskScale + .5f * btnSizeXToDesk * deskScale,
+                    height * .5f - btnSizeYToDesk * deskScale + .5f * btnSizeYToDesk * deskScale)
+                    .setLayer(.2f)
+                    .setScale(-btnSizeYToDesk * deskScale, btnSizeXToDesk * deskScale)
+                    .setAngle(-(float) Math.PI / 2);
+            addDecal(new Decal(btnTransform, btnPlayTex));
+            Rectangle btnPlayArea = new Rectangle(
+                    new Vector2f(-width * .53f + btnSizeYToDesk * deskScale, height * .5f - btnSizeYToDesk * deskScale),
+                    new Vector2f(btnSizeXToDesk * deskScale, 0),
+                    new Vector2f(0, btnSizeYToDesk * deskScale)
+            );
 
-        //ставлю кнопку для очистки поля от шашек
-        btnTransform = new Transform(btnTransform).translate(.536f*width, 0);
-        addDecal(new Decal(btnTransform, btnClearTex));
-        Rectangle btnClearArea = new Rectangle(
-                new Vector2f(-width*.53f + btnSizeYToDesk*deskScale + .536f*width, height*.5f - btnSizeYToDesk*deskScale),
-                new Vector2f(btnSizeXToDesk*deskScale, 0),
-                new Vector2f(0,btnSizeYToDesk*deskScale)
-        );
+            //ставлю кнопку для очистки поля от шашек
+            btnTransform = new Transform(btnTransform).translate(.536f * width, 0);
+            addDecal(new Decal(btnTransform, btnClearTex));
+            Rectangle btnClearArea = new Rectangle(
+                    new Vector2f(-width * .53f + btnSizeYToDesk * deskScale + .536f * width, height * .5f - btnSizeYToDesk * deskScale),
+                    new Vector2f(btnSizeXToDesk * deskScale, 0),
+                    new Vector2f(0, btnSizeYToDesk * deskScale)
+            );
+
+            game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_PRESS,
+                    ()-> {if(btnPlayArea.inArea(game.mouse.getAbsoluteMousePos())) setCheckers();} ));
+            game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_PRESS,
+                    ()-> {if(btnClearArea.inArea(game.mouse.getAbsoluteMousePos())) clearCheckers(width, height);} ));
+        }
 
         //"логическая" доска
         logicDesk = new DeskArray();
@@ -120,11 +127,6 @@ public class Desk extends Map
 
         game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_MIDDLE, Mouse.BUTTON_PRESS,
                 ()-> {if(currentChecker!=null) currentChecker.reverse();} ));
-
-        game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_PRESS,
-                ()-> {if(btnPlayArea.inArea(game.mouse.getAbsoluteMousePos())) setCheckers();} ));
-        game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_PRESS,
-                ()-> {if(btnClearArea.inArea(game.mouse.getAbsoluteMousePos())) clearCheckers(width, height);} ));
     }
 
     private boolean gameInProcess = true;

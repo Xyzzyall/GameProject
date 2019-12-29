@@ -22,7 +22,7 @@ public class GameThread extends Thread
 
     public Game game;
 
-    private void init() {
+    protected void init() {
         game = new Game(width, height);
         game.init();
         game.fps = fps;
@@ -30,7 +30,7 @@ public class GameThread extends Thread
         game.textureBank.addTexturesFromList(textures);
         try {
             Checker.loadTexures(game);
-            game.map = new Desk(game);
+            game.map = new Desk(game, true);
         } catch(Exception e){e.printStackTrace(); throw new Error();}
     }
 
