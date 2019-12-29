@@ -10,11 +10,13 @@ public class MenuThread extends Thread {
     private Frame currentFrame;
     private MenuActions actionsHandler;
     private JFrame frame;
+    private GameThread gameThread;
 
-    public MenuThread(){
+    public MenuThread(GameThread gameThread){
         actionsHandler = new MenuActions(this);
         frame = new JFrame("Checkers");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.gameThread = gameThread;
     }
 
     @Override
@@ -49,6 +51,7 @@ public class MenuThread extends Thread {
                     parent.currentFrame.show();
                     break;
                 case SINGLE_GAME:
+                    parent.startSingleGame();
                     break;
                 case BACK_TO_MAIN_MENU:
                     parent.changePane(new MainFrame(this, null));
@@ -66,5 +69,11 @@ public class MenuThread extends Thread {
         close();
         currentFrame = frame;
         currentFrame.setJFrame(this.frame);
+    }
+
+    private void startSingleGame(){
+        frame.setVisible(false);
+        gameThread.run();
+        frame.setVisible(true);
     }
 }
