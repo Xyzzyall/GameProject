@@ -4,11 +4,13 @@ import javax.swing.*;
 
 public class Frame {
     protected Action actionsHandler;
+    protected Feedback feedbackHandler;
     protected JPanel mainPanel;
     protected JFrame frame;
 
-    public Frame(Action actionsHandler) {
+    public Frame(Action actionsHandler, Feedback feedbackHandler) {
         this.actionsHandler = actionsHandler;
+        this.feedbackHandler = feedbackHandler;
     }
 
     protected void handle_action(Action.Actions action){
@@ -20,14 +22,14 @@ public class Frame {
     }
 
     public void show(){
-        //frame.removeAll();
         frame.setContentPane(this.mainPanel);
         frame.pack();
         frame.setVisible(true);
     }
 
     public void close(){
-        //mainPanel.removeAll();
-        //mainPanel = null;
+        mainPanel.removeAll();
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 }

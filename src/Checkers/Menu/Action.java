@@ -4,9 +4,12 @@ import java.util.function.Consumer;
 
 public abstract class Action implements Consumer<Action.Actions> {
     public enum Actions {
-        SINGE_GAME,
+        SINGLE_GAME,
         START_MULTIPLAYER_GAME,
         OPEN_SETTINGS,
-        EXIT
+        EXIT,
+        BACK_TO_MAIN_MENU
     }
+
+
 }

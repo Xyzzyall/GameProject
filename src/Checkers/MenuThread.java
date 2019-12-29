@@ -2,8 +2,8 @@ package Checkers;
 import Checkers.Menu.Action;
 import Checkers.Menu.Frame;
 import Checkers.Menu.MainFrame;
+import Checkers.Menu.MultiplayerFrame;
 
-import javax.accessibility.Accessible;
 import javax.swing.*;
 
 public class MenuThread extends Thread {
@@ -14,12 +14,13 @@ public class MenuThread extends Thread {
     public MenuThread(){
         actionsHandler = new MenuActions(this);
         frame = new JFrame("Checkers");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     @Override
     public void run() {
         super.run();
-        currentFrame = new MainFrame(actionsHandler);
+        currentFrame = new MainFrame(actionsHandler, null);
         currentFrame.setJFrame(frame);
         currentFrame.show();
 
@@ -30,7 +31,10 @@ public class MenuThread extends Thread {
 
         public MenuActions(MenuThread menuThread){
             parent = menuThread;
+            multFeedback = new MultiplayerFrame.MultiplayerFrameFeedback();
         }
+
+        private MultiplayerFrame.MultiplayerFrameFeedback multFeedback;
 
         @Override
         public void accept(Action.Actions actions) {
@@ -40,11 +44,27 @@ public class MenuThread extends Thread {
                     //parent.close();
                     System.exit(0);
                     break;
+                case START_MULTIPLAYER_GAME:
+                    parent.changePane(new MultiplayerFrame(this, multFeedback));
+                    parent.currentFrame.show();
+                    break;
+                case SINGLE_GAME:
+                    break;
+                case BACK_TO_MAIN_MENU:
+                    parent.changePane(new MainFrame(this, null));
+                    parent.currentFrame.show();
+                    break;
             }
         }
     }
 
     private void close(){
         currentFrame.close();
+    }
+
+    private void changePane(Frame frame){
+        close();
+        currentFrame = frame;
+        currentFrame.setJFrame(this.frame);
     }
 }

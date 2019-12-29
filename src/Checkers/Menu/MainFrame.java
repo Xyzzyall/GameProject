@@ -11,12 +11,12 @@ public class MainFrame extends Frame {
     private JButton ExitButton;
     private JPanel Main;
 
-    public MainFrame(Action actionsHandler) {
-        super(actionsHandler);
+    public MainFrame(Action actionsHandler, Feedback feedback) {
+        super(actionsHandler, feedback);
         SingleGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handle_action(Action.Actions.SINGE_GAME);
+                handle_action(Action.Actions.SINGLE_GAME);
             }
         });
         MultiplayerGameButton.addActionListener(new ActionListener() {
