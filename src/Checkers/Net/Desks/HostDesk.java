@@ -12,8 +12,4 @@ public class HostDesk extends Desk {
     public HostDesk(Game game) throws TextureBank.NonExistentTextureException {
         super(game, true);
     }
-
-    public Vector<Checker> getCheckers(){
-        return checkers;
-    }
 }

@@ -8,6 +8,7 @@ import Checkers.Objects.CheckerReverseData;
 import Main.Actor;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class HostDataHandler extends Actor {
     HostDesk desk;
@@ -39,10 +40,12 @@ public class HostDataHandler extends Actor {
         if (tick == SENDING_FREQUENCY){
             wrapsReady = false;
             checker_bytes.clear();
-            for (Checker c:
-                    desk.getCheckers()) {
-                checker_bytes.add(new TransformWrap(c.smoothTransform).bytes);
-                checker_bytes.add(new CheckerReverseWrap(new CheckerReverseData(c.typ)).bytes);
+            Vector<Checker> checkers = desk.getCheckers();
+            int n = checkers.size();
+            for (int i = 0; i < n; i++){
+                Checker c = checkers.get(i);
+                checker_bytes.add(new TransformWrap(c.smoothTransform, i).bytes);
+                checker_bytes.add(new CheckerReverseWrap(new CheckerReverseData(c.typ), i).bytes);
             }
             wrapsReady = true;
             tick += 1;

@@ -61,15 +61,16 @@ public class SmoothTransform extends Transform
         return super.setPosition(vec);
     }
 
-    public byte[] to_bytes(){
-        return ByteBuffer.allocate(6*4+1).put(Wrap.TRANSFORM_SIGN).putFloat(position.x).putFloat(position.y).putFloat(scale.x).putFloat(scale.y).putFloat(angle).putFloat(layer).array();
+    public byte[] to_bytes(int param){
+        return ByteBuffer.allocate(6*4 + 1 + 4).put(Wrap.TRANSFORM_SIGN).putFloat(position.x).putFloat(position.y).putFloat(scale.x).putFloat(scale.y).putFloat(angle).putFloat(layer).putInt(param).array();
     }
 
-    public void from_bytes(byte[] bytes){
+    public int from_bytes(byte[] bytes){
         ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
         setPosition(byteBuffer.getFloat(1), byteBuffer.getFloat(5));
         setScale(byteBuffer.getFloat(9), byteBuffer.getFloat(13));
         setAngle(byteBuffer.getFloat(17));
         setAngle(byteBuffer.getFloat(21));
+        return byteBuffer.getInt(25);
     }
 }

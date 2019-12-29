@@ -2,9 +2,11 @@ package Checkers.Net.Wraps;
 
 import Checkers.Objects.CheckerReverseData;
 
+import java.nio.ByteBuffer;
+
 public class CheckerReverseWrap extends Wrap<CheckerReverseData> {
-    public CheckerReverseWrap(CheckerReverseData data){
-        bytes = data.to_bytes();
+    public CheckerReverseWrap(CheckerReverseData data, int param){
+        bytes = data.to_bytes(param);
     }
 
     @Override
@@ -12,13 +14,18 @@ public class CheckerReverseWrap extends Wrap<CheckerReverseData> {
         return Wrap.CHECKER_REVERSE_SIGN;
     }
 
+    public int getParam(){
+        return ByteBuffer.wrap(bytes).getInt(3);
+    }
+
     @Override
     public CheckerReverseData unwrap_to(CheckerReverseData arg) {
-        return null;
+        arg = new CheckerReverseData(bytes);
+        return arg;
     }
 
     @Override
     public CheckerReverseData unwrap() throws WrongIntepretation {
-        return null;
+        return new CheckerReverseData(bytes);
     }
 }

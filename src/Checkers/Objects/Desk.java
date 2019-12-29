@@ -148,6 +148,10 @@ public class Desk extends Map
         checker.transform.setPosition(x*checkerSize + startCellsX, y*checkerSize + startCellsY);
     }
 
+    public Vector<Checker> getCheckers(){
+        return checkers;
+    }
+
     private boolean objectIsMoving = false;
     private Checker currentChecker = null;
     private Vector2f lastMousePos;
