@@ -21,13 +21,11 @@ public class HostDataHandler extends Actor {
     static int SENDING_FREQUENCY = 10;
 
     private ArrayList<byte[]> checker_bytes = new ArrayList<>();
-    private boolean wrapsReady = false;
 
-    public ArrayList<byte[]> getChecker_bytes(){
-        if (wrapsReady){
+    public ArrayList<byte[]> getCheckerBytes(){
+        if (!checker_bytes.isEmpty()){
             ArrayList<byte[]> res = new ArrayList<>(checker_bytes);
             checker_bytes.clear();
-            wrapsReady = false;
             return res;
         } else {
             return null;
@@ -38,7 +36,6 @@ public class HostDataHandler extends Actor {
     @Override
     public void update() {
         if (tick == SENDING_FREQUENCY){
-            wrapsReady = false;
             checker_bytes.clear();
             Vector<Checker> checkers = desk.getCheckers();
             int n = checkers.size();
@@ -47,10 +44,9 @@ public class HostDataHandler extends Actor {
                 checker_bytes.add(new TransformWrap(c.smoothTransform, i).bytes);
                 checker_bytes.add(new CheckerReverseWrap(new CheckerReverseData(c.typ), i).bytes);
             }
-            wrapsReady = true;
-            tick += 1;
-        } else {
             tick = 0;
+        } else {
+            tick += 1;
         }
     }
 

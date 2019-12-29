@@ -9,6 +9,10 @@ public class CheckerReverseWrap extends Wrap<CheckerReverseData> {
         bytes = data.to_bytes(param);
     }
 
+    public CheckerReverseWrap(byte[] bytes){
+        this.bytes = bytes;
+    }
+
     @Override
     public byte getWrapSign() {
         return Wrap.CHECKER_REVERSE_SIGN;

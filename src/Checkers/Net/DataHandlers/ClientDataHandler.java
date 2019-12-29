@@ -56,7 +56,6 @@ public class ClientDataHandler extends Actor {
             }
             wrapsReady = false;
         }
-
     }
 
     @Override

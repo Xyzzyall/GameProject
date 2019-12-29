@@ -3,6 +3,8 @@ import Checkers.Menu.Action;
 import Checkers.Menu.Frame;
 import Checkers.Menu.MainFrame;
 import Checkers.Menu.MultiplayerFrame;
+import Checkers.Net.OnMachine.Client;
+import Checkers.Net.OnMachine.Host;
 
 import javax.swing.*;
 
@@ -49,6 +51,7 @@ public class MenuThread extends Thread {
                 case START_MULTIPLAYER_GAME:
                     parent.changePane(new MultiplayerFrame(this, multFeedback));
                     parent.currentFrame.show();
+                    parent.startDebugBridge();
                     break;
                 case SINGLE_GAME:
                     parent.startSingleGame();
@@ -56,6 +59,7 @@ public class MenuThread extends Thread {
                 case BACK_TO_MAIN_MENU:
                     parent.changePane(new MainFrame(this, null));
                     parent.currentFrame.show();
+                    parent.stopDebugBridge();
                     break;
             }
         }
@@ -75,5 +79,16 @@ public class MenuThread extends Thread {
         frame.setVisible(false);
         gameThread.run();
         frame.setVisible(true);
+    }
+
+    private void stopDebugBridge(){
+        if (bridgeThread != null)
+            bridgeThread.stop = true;
+    }
+
+    private BridgeThread bridgeThread;
+    private void startDebugBridge(){
+        this.bridgeThread = new BridgeThread(new Client(gameThread), new Host(gameThread));
+        bridgeThread.start();
     }
 }

@@ -7,7 +7,7 @@ import Main.TextureBank;
 
 public class ClientDesk extends Desk {
 
-    public ClientDesk(Game game, boolean buttons) throws TextureBank.NonExistentTextureException {
+    public ClientDesk(Game game) throws TextureBank.NonExistentTextureException {
         super(game, false);
     }
 

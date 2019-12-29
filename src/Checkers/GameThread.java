@@ -20,6 +20,15 @@ public class GameThread extends Thread
         this.textures = textures;
     }
 
+    public GameThread(GameThread thread){
+        super("Game");
+        setPriority(MAX_PRIORITY);
+        this.fps = thread.fps;
+        this.width = thread.width;
+        this.height = thread.height;
+        this.textures = thread.textures;
+    }
+
     public Game game;
 
     protected void init() {

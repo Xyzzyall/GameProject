@@ -16,6 +16,6 @@ public class CheckerReverseData {
     }
 
     public byte[] to_bytes(int param){
-        return ByteBuffer.allocate(2 + 4).put(Wrap.CHECKER_REVERSE_SIGN).putChar(checker_type).putInt(param).array();
+        return ByteBuffer.allocate(2 + 8).put(Wrap.CHECKER_REVERSE_SIGN).putChar(checker_type).putInt(param).array();
     }
 }
