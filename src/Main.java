@@ -1,4 +1,5 @@
 import Checkers.GameThread;
+import Checkers.MenuThread;
 
 public class Main
 {
@@ -15,6 +16,7 @@ public class Main
 
     public static void main(String[] args)
     {
-        new GameThread(800, 600, 45, textures).run();
+        //new GameThread(800, 600, 45, textures).run();
+        new MenuThread().run();
     }
 }
