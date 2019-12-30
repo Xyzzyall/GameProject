@@ -3,6 +3,10 @@ package Checkers;
 import Checkers.Net.ClientThread;
 import Checkers.Net.HostThread;
 
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 public class BridgeThread extends Thread {
     private ClientThread client;
     private HostThread host;
@@ -10,6 +14,14 @@ public class BridgeThread extends Thread {
     public BridgeThread(ClientThread client, HostThread host){
         this.client = client;
         this.host = host;
+        try {
+            client.setUdp(InetAddress.getByName("localhost"), 1000, InetAddress.getByName("localhost"), 1001);
+            host.setUdp(InetAddress.getByName("localhost"), 1001, InetAddress.getByName("localhost"), 1000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean stop = false;
@@ -25,15 +37,5 @@ public class BridgeThread extends Thread {
         }
         host.start();
 
-        while (!stop){
-            byte[] from_client = client.sendData();
-            byte[] from_host = host.sendData();
-            if (from_client != null){
-                host.acceptData(from_client);
-            }
-            if (from_host != null){
-                client.acceptData(from_host);
-            }
-        }
     }
 }

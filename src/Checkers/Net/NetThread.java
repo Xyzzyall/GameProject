@@ -8,13 +8,14 @@ import Checkers.Net.Wraps.TransformWrap;
 import Checkers.Net.Wraps.Wrap;
 import Checkers.Objects.MouseActionData;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public abstract class NetThread extends GameThread {
-
-    private ArrayDeque<byte[]> given_packets = new ArrayDeque<>();
-    private ArrayDeque<byte[]> packets_to_sent = new ArrayDeque<>();
 
     public NetThread(int width, int height, int fps, String[] textures) {
         super(width, height, fps, textures);
@@ -24,33 +25,28 @@ public abstract class NetThread extends GameThread {
         super(thread);
     }
 
-    protected boolean sendingQueueIsEmpty(){
-        return packets_to_sent.isEmpty();
+    public void setUdp(InetAddress self, int port, InetAddress other, int otherPort) throws SocketException {
+        udp = new UDP(self, port, other, otherPort);
     }
 
-    private byte[] pop(){
-        return given_packets.pollLast();
+    Vector<byte[]> receiveAll(){
+        Vector<byte[]> res = new Vector<>();
+        while (true){
+            try {
+                res.add(udp.receive());
+            } catch (Exception e) {
+                break;
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return res;
     }
 
-    private byte[] last(){
-        return given_packets.getLast();
-    }
-
-    protected void pull(byte[] packet){
-        given_packets.addFirst(packet);
-    }
-
-    protected void to_send_queue(Wrap wrap){
-        packets_to_sent.addFirst(wrap.bytes);
-    }
-    protected void to_send_queue(byte[] bytes){
-        packets_to_sent.addLast(bytes);
-    }
-
-    protected byte[] pop_bytes_to_send(){
-        System.out.println(packets_to_sent.size());
-        return packets_to_sent.pollFirst();
-    }
+    public UDP udp;
 
     static protected class WrapsUnpacker{
         public ArrayList<MouseActionWrap> mouseActionWraps;
@@ -62,8 +58,8 @@ public abstract class NetThread extends GameThread {
             transformWraps = new ArrayList<>();
             checkerReverseWraps = new ArrayList<>();
 
-            while (!thread.given_packets.isEmpty()){
-                byte[] bytes = thread.pop();
+            for (byte[] bytes:
+                 thread.receiveAll()) {
                 try {
                     switch (bytes[0]){
                         case Wrap.TRANSFORM_SIGN:
@@ -88,8 +84,14 @@ public abstract class NetThread extends GameThread {
         public int length(){
             return mouseActionWraps.size() + transformWraps.size() + checkerReverseWraps.size();
         }
-    }
 
-    public abstract void acceptData(byte[] bytes);
-    public abstract byte[] sendData();
+        @Override
+        public String toString() {
+            return "WrapsUnpacker{" +
+                    "mouseActionWraps=" + mouseActionWraps.size()+
+                    ", transformWraps=" + transformWraps.size() +
+                    ", checkerReverseWraps=" + checkerReverseWraps.size() +
+                    '}';
+        }
+    }
 }

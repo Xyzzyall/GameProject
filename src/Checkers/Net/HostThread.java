@@ -7,6 +7,8 @@ import Checkers.Objects.Checker;
 import Checkers.Objects.Desk;
 import Main.Actor;
 
+import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Queue;
 
@@ -39,16 +41,24 @@ public abstract class HostThread extends NetThread {
             this.alive = true;
             this.thread = thread;
             this.handler = handler;
+            try {
+                thread.udp.init();
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void update() {
             ArrayList<byte[]> checker_bytes = handler.getCheckerBytes();
             if (checker_bytes != null){
-                System.out.println(checker_bytes.size());
                 for (byte[] bytes:
                      checker_bytes) {
-                    thread.to_send_queue(bytes);
+                    try {
+                        thread.udp.send(bytes);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

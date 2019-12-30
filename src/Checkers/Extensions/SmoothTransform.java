@@ -62,7 +62,7 @@ public class SmoothTransform extends Transform
     }
 
     public byte[] to_bytes(int param){
-        return ByteBuffer.allocate(6*4 + 1 + 4).put(Wrap.TRANSFORM_SIGN).putFloat(position.x).putFloat(position.y).putFloat(scale.x).putFloat(scale.y).putFloat(angle).putFloat(layer).putInt(param).array();
+        return ByteBuffer.allocate(64).put(Wrap.TRANSFORM_SIGN).putFloat(position.x).putFloat(position.y).putFloat(scale.x).putFloat(scale.y).putFloat(angle).putFloat(layer).putInt(param).array();
     }
 
     public int from_bytes(byte[] bytes){

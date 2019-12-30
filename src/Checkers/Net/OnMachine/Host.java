@@ -11,18 +11,4 @@ public class Host extends HostThread {
     public Host(GameThread thread){
         super(thread);
     }
-
-    @Override
-    public void acceptData(byte[] bytes) {
-        pull(bytes);
-    }
-
-    @Override
-    public byte[] sendData() {
-        if (!sendingQueueIsEmpty()){
-            return null;
-        } else {
-            return pop_bytes_to_send();
-        }
-    }
 }

@@ -6,6 +6,8 @@ import Checkers.Net.Desks.ClientDesk;
 import Checkers.Objects.Checker;
 import Main.Actor;
 
+import java.net.SocketException;
+
 public abstract class ClientThread extends NetThread {
     ClientDesk desk;
     ClientDataHandler dataHandler;
@@ -35,6 +37,11 @@ public abstract class ClientThread extends NetThread {
             this.alive = true;
             this.thread = thread;
             this.handler = dataHandler;
+            try {
+                thread.udp.init();
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
