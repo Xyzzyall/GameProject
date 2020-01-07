@@ -1,4 +1,4 @@
-package Checkers.Net.OnMachine;
+package Checkers.Net.Threads;
 
 import Checkers.GameThread;
 import Checkers.Net.HostThread;

@@ -1,13 +1,12 @@
 package Checkers.Net.Desks;
 
 import Checkers.Net.Wraps.MouseActionWrap;
-import Checkers.Net.Wraps.MouseLeftClick;
-import Checkers.Objects.Checker;
 import Checkers.Objects.Desk;
 import Checkers.Objects.MouseActionData;
 import Main.Game;
 import Main.TextureBank;
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 
 import java.util.ArrayList;
 
@@ -39,7 +38,7 @@ public class ClientDesk extends Desk {
     public void mouseLeftHold(Vector2f mouse_pos, Vector2f last_pos) {
         super.mouseLeftHold(mouse_pos, last_pos);
         if (hold > HOLD_SENDING_FREQUENCY){
-            mouse_wraps.add(new MouseActionWrap(new MouseActionData(MouseActionWrap.MOUSE_LEFT_HOLD, mouse_pos, getLastMousePos())));
+            mouse_wraps.add(new MouseActionWrap(new MouseActionData(MouseActionWrap.CHECKER_HOLD, mouse_pos, getLastMousePos(), new Vector2i(0,0), new Vector2i(0,0))));
             hold = 0;
         } else {
             hold += 1;
@@ -50,20 +49,19 @@ public class ClientDesk extends Desk {
     @Override
     public void mouseLeftPress(Vector2f mouse_pos) {
         super.mouseLeftPress(mouse_pos);
-        mouse_wraps.add(new MouseActionWrap(new MouseActionData(MouseActionWrap.MOUSE_LEFT_CLICK, mouse_pos, getLastMousePos())));
+        mouse_wraps.add(new MouseActionWrap(new MouseActionData(MouseActionWrap.CHECKER_GRABBED, mouse_pos, getLastMousePos(), new Vector2i(0,0), new Vector2i(0,0))));
     }
 
     @Override
     public void mouseLeftRelease() {
         super.mouseLeftRelease();
-        mouse_wraps.add(new MouseActionWrap(new MouseActionData(MouseActionWrap.MOUSE_LEFT_HOLD, getLastMousePos(), getLastMousePos())));
-        mouse_wraps.add(new MouseActionWrap(new MouseActionData(MouseActionWrap.MOUSE_LEFT_RELEASE, new Vector2f(0,0), getLastMousePos())));
+        mouse_wraps.add(new MouseActionWrap(new MouseActionData(MouseActionWrap.CHECKER_SET, new Vector2f(0,0), getLastMousePos(), from, to)));
     }
 
     @Override
     public void mouseMiddlePress() {
         super.mouseMiddlePress();
-        mouse_wraps.add(new MouseActionWrap(new MouseActionData(MouseActionWrap.MOUSE_MIDDLE_CLICK, new Vector2f(0,0), getLastMousePos())));
+        mouse_wraps.add(new MouseActionWrap(new MouseActionData(MouseActionWrap.MOUSE_MIDDLE_CLICK, new Vector2f(0,0), getLastMousePos(), new Vector2i(0,0), new Vector2i(0,0))));
     }
 
     @Override

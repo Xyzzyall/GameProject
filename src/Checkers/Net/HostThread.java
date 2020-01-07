@@ -41,15 +41,16 @@ public abstract class HostThread extends NetThread {
             this.alive = true;
             this.thread = thread;
             this.handler = handler;
-            try {
-                thread.udp.init();
+            /*try {
+                thread.udp.init(false);
             } catch (SocketException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
         @Override
         public void update() {
+            thread.desk.logicDesk.toTrainingMode();
             WrapsUnpacker wraps = new WrapsUnpacker(thread);
             handler.acceptWraps(wraps.mouseActionWraps, wraps.transformWraps, wraps.checkerReverseWraps);
 

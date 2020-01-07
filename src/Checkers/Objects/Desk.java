@@ -155,7 +155,7 @@ public class Desk extends Map
     private boolean objectIsMoving = false;
     private Checker currentChecker = null;
     private Vector2f lastMousePos;
-    private Vector2i from, to;
+    protected Vector2i from, to;
 
     public Checker getCurrentChecker(){
         return objectIsMoving ? currentChecker: null;

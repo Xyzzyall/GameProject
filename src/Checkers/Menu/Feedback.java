@@ -8,6 +8,8 @@ public abstract class Feedback implements Consumer<Feedback.Feedbacks> {
         IP_ADDRESS,
         PLAYER_CONNECTED,
         YOU_CONNECTED,
-        OPPONENT_IS_READY
+        OPPONENT_IS_READY,
+        CONNECT_TO_HOST,
+        CREATE_HOST
     }
 }

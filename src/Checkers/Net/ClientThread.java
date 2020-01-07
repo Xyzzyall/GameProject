@@ -40,11 +40,11 @@ public abstract class ClientThread extends NetThread {
             this.alive = true;
             this.thread = thread;
             this.handler = dataHandler;
-            try {
+            /*try {
                 thread.udp.init();
             } catch (SocketException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
         @Override

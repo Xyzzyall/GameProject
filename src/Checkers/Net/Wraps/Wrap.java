@@ -6,7 +6,11 @@ public abstract class Wrap<T> {
                              MOUSE_LEFT_HOLD = 3,
                              MOUSE_LEFT_RELEASE = 4,
                              MOUSE_MIDDLE_CLICK = 5,
-                             CHECKER_REVERSE_SIGN = 6;
+                             CHECKER_REVERSE_SIGN = 6,
+                             CHECKER_GRABBED = 7,
+                             CHECKER_HOLD = 8,
+                             CHECKER_SET = 9,
+                             ECHO_PACKET = 10, ECHO_RESPONSE = 11;
 
     public abstract byte getWrapSign();
 

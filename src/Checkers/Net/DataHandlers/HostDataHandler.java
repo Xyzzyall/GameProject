@@ -52,7 +52,7 @@ public class HostDataHandler extends Actor {
                     Vector2i cell = desk.getClosestCell(c.smoothTransform);
                     desk.setCheckerOnCell(c, cell.x, cell.y);
                     desk.turn(clientFrom, cell);
-
+                    System.out.println(cell.x + ':' + cell.y + " to " + clientFrom.x + ':' + clientFrom.y);
                     for (Checker checker:
                             desk.getCheckers()) {
                         Vector2i vec = desk.getClosestCell(checker.transform);
@@ -69,16 +69,36 @@ public class HostDataHandler extends Actor {
     }
 
     public void acceptWraps(ArrayList<MouseActionWrap> mouseActionWraps, ArrayList<TransformWrap> transformWraps, ArrayList<CheckerReverseWrap> checkerReverseWraps){
-
         for (TransformWrap wrap:
              transformWraps) {
             int i = wrap.getParam();
             Checker checker = desk.getCheckers().get(i);
             if (checker != desk.getCurrentChecker()){
                 wrap.unwrap_to(checker.smoothTransform);
-                setCheckerOnDesk(checker, mouseActionWraps);
+                //setCheckerOnDesk(checker, mouseActionWraps);
             }
         }
+
+        for (MouseActionWrap wrap:
+                mouseActionWraps){
+            MouseActionData data = wrap.unwrap();
+
+            if (data.from.x == -1)
+                data.from = null;
+            if (data.to.x == -1)
+                data.to = null;
+
+            switch (data.type){
+                case Wrap.CHECKER_GRABBED:
+                    break;
+                case Wrap.CHECKER_HOLD:
+                    break;
+                case Wrap.CHECKER_SET:
+                    //desk.turn(data.from, data.to);
+                    break;
+            }
+        }
+
         for (CheckerReverseWrap wrap:
             checkerReverseWraps){
             int i = wrap.getParam();

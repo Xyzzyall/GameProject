@@ -17,6 +17,8 @@ public class BridgeThread extends Thread {
         try {
             client.setUdp(InetAddress.getByName("localhost"), 1000, InetAddress.getByName("localhost"), 1001);
             host.setUdp(InetAddress.getByName("localhost"), 1001, InetAddress.getByName("localhost"), 1000);
+            client.udp.init(false);
+            host.udp.init(false);
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (UnknownHostException e) {

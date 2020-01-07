@@ -18,5 +18,6 @@ public class Main
     {
         //new GameThread(800, 600, 45, textures).run();
         new MenuThread(new GameThread(800, 600, 45, textures)).run();
+        new MenuThread(new GameThread(800, 600, 45, textures)).run();
     }
 }
