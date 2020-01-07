@@ -31,7 +31,7 @@ public class Desk extends Map
         checkers.add(checker);
     }
 
-    DeskArray logicDesk;
+    public DeskArray logicDesk;
 
     private int width, height;
 
@@ -119,14 +119,14 @@ public class Desk extends Map
 
         //создаю управление
         game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_PRESS,
-                ()-> lastMousePos = game.mouse.getAbsoluteMousePos() ));
+                ()-> mouseLeftPress(game.mouse.getAbsoluteMousePos()) ));
         game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_HOLD,
-                ()-> {mouseLeftHold(game.mouse.getAbsoluteMousePos()); lastMousePos = game.mouse.getAbsoluteMousePos();}));
+                ()-> {mouseLeftHold(game.mouse.getAbsoluteMousePos(), lastMousePos); lastMousePos = game.mouse.getAbsoluteMousePos();}));
         game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_LEFT, Mouse.BUTTON_RELEASE,
                 ()-> mouseLeftRelease()));
 
         game.mouse.addMouseAction(new Mouse.MouseAction(Mouse.MOUSE_BUTTON_MIDDLE, Mouse.BUTTON_PRESS,
-                ()-> {if(currentChecker!=null) currentChecker.reverse();} ));
+                ()-> mouseMiddlePress() ));
     }
 
     private boolean gameInProcess = true;
@@ -157,7 +157,23 @@ public class Desk extends Map
     private Vector2f lastMousePos;
     private Vector2i from, to;
 
-    public void mouseLeftHold(Vector2f mouse_pos) //вежливо вырван из чьего-то редактора
+    public Checker getCurrentChecker(){
+        return objectIsMoving ? currentChecker: null;
+    }
+
+    public Vector2f getLastMousePos(){
+        return lastMousePos;
+    }
+
+    public void mouseMiddlePress(){
+        if(currentChecker!=null) currentChecker.reverse();
+    }
+
+    public void mouseLeftPress(Vector2f mouse_pos){
+        lastMousePos = mouse_pos;
+    }
+
+    public void mouseLeftHold(Vector2f mouse_pos, Vector2f lastMousePos) //вежливо вырван из чьего-то редактора
     {
         if (objectIsMoving) { //что-то выделяли??
             if (currentChecker == null) { //на самом деле ничего не выделили? исправляем.
@@ -189,6 +205,8 @@ public class Desk extends Map
             objectIsMoving = true;
             from = getClosestCell(currentChecker.transform);
         }
+
+
     }
 
     public void mouseLeftRelease()

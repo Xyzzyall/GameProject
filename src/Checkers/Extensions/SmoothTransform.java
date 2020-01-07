@@ -65,12 +65,16 @@ public class SmoothTransform extends Transform
         return ByteBuffer.allocate(64).put(Wrap.TRANSFORM_SIGN).putFloat(position.x).putFloat(position.y).putFloat(scale.x).putFloat(scale.y).putFloat(angle).putFloat(layer).putInt(param).array();
     }
 
+    public boolean blockedBytes = false;
+
     public int from_bytes(byte[] bytes){
         ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-        setPosition(byteBuffer.getFloat(1), byteBuffer.getFloat(5));
-        setScale(byteBuffer.getFloat(9), byteBuffer.getFloat(13));
-        setAngle(byteBuffer.getFloat(17));
-        setAngle(byteBuffer.getFloat(21));
+        if (!blockedBytes) {
+            setPosition(byteBuffer.getFloat(1), byteBuffer.getFloat(5));
+            setScale(byteBuffer.getFloat(9), byteBuffer.getFloat(13));
+            setAngle(byteBuffer.getFloat(17));
+            setAngle(byteBuffer.getFloat(21));
+        }
         return byteBuffer.getInt(25);
     }
 }

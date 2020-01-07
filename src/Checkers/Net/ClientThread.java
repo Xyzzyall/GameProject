@@ -3,9 +3,12 @@ package Checkers.Net;
 import Checkers.GameThread;
 import Checkers.Net.DataHandlers.ClientDataHandler;
 import Checkers.Net.Desks.ClientDesk;
+import Checkers.Net.Wraps.MouseActionWrap;
 import Checkers.Objects.Checker;
+import Checkers.Objects.CheckerReverseData;
 import Main.Actor;
 
+import java.io.IOException;
 import java.net.SocketException;
 
 public abstract class ClientThread extends NetThread {
@@ -49,6 +52,26 @@ public abstract class ClientThread extends NetThread {
             WrapsUnpacker wraps = new WrapsUnpacker(thread);
             if (wraps.length() > 0)
                 handler.acceptWraps(wraps.transformWraps, wraps.checkerReverseWraps);
+
+            Checker c = thread.desk.getCurrentChecker();
+            int i = thread.desk.getCheckers().indexOf(c);
+            if (c != null){
+                try {
+                    thread.udp.send(c.smoothTransform.to_bytes(i));
+                    thread.udp.send(new CheckerReverseData(c.typ).to_bytes(i));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            for (byte[] bytes:
+                 thread.desk.getMouseBytes()) {
+                try {
+                    thread.udp.send(bytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
 
         @Override

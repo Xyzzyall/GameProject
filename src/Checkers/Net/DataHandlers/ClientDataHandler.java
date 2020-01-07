@@ -39,7 +39,10 @@ public class ClientDataHandler extends Actor {
         for (TransformWrap transformWrap:
              checker_transform_wraps) {
             int i = transformWrap.getParam();
-            transformWrap.unwrap_to(checkers.get(i).smoothTransform);
+            Checker checker = checkers.get(i);
+            if (checker != desk.getCurrentChecker()){
+                transformWrap.unwrap_to(checkers.get(i).smoothTransform);
+            }
         }
         for (CheckerReverseWrap reverses:
              checker_reverse_wraps) {
@@ -47,7 +50,9 @@ public class ClientDataHandler extends Actor {
             Checker c = checkers.get(i);
             try {
                 CheckerReverseData reverse = reverses.unwrap();
-                c.changeTyp(reverse.checker_type);
+                if (c != desk.getCurrentChecker()) {
+                    c.changeTyp(reverse.checker_type);
+                }
             } catch (Wrap.WrongIntepretation ex) {
                 ex.printStackTrace();
             }

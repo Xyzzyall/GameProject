@@ -8,6 +8,10 @@ public class MouseActionWrap extends Wrap<MouseActionData> {
         check_interpretation();
     }
 
+    public MouseActionWrap(MouseActionData data){
+        this.bytes = data.to_bytes();
+    }
+
     @Override
     public byte getWrapSign() {
         return 0;

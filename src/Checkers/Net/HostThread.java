@@ -50,6 +50,9 @@ public abstract class HostThread extends NetThread {
 
         @Override
         public void update() {
+            WrapsUnpacker wraps = new WrapsUnpacker(thread);
+            handler.acceptWraps(wraps.mouseActionWraps, wraps.transformWraps, wraps.checkerReverseWraps);
+
             ArrayList<byte[]> checker_bytes = handler.getCheckerBytes();
             if (checker_bytes != null){
                 for (byte[] bytes:

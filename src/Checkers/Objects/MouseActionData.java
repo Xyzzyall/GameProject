@@ -23,7 +23,7 @@ public class MouseActionData {
     }
 
     public byte[] to_bytes(){
-        return ByteBuffer.allocate(1 + 4*2 + 4*2).put(type).putFloat(mousePos.x).putFloat(mousePos.y).putFloat(mouseLastPos.x).putFloat(mouseLastPos.y).array();
+        return ByteBuffer.allocate(64).put(type).putFloat(mousePos.x).putFloat(mousePos.y).putFloat(mouseLastPos.x).putFloat(mouseLastPos.y).array();
     }
 
 }
